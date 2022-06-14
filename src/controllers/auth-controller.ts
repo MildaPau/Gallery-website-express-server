@@ -11,6 +11,34 @@ type AuthResponseBody = {
   token: string,
 } | ErrorResponseBody;
 
+export const checkEmail: RequestHandler<
+  unknown,
+  { valid: true } | ErrorResponseBody,
+  unknown,
+  { email?: string }
+> = async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    if (email === undefined) {
+      throw new Error('Reikalingas paštas patikrinimui');
+    }
+
+    const userDoc = await UserModel.findOne({ email });
+    if (userDoc !== null) {
+      throw new Error('Paštas užimtas');
+    }
+
+    res.status(200).json({
+      valid: true,
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: error instanceof Error ? error.message : 'Serverio klaida atpažįstant vartotoją',
+    });
+  }
+};
+
 export const login: RequestHandler<
   unknown,
   AuthResponseBody,
