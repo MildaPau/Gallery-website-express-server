@@ -5,7 +5,8 @@ declare global {
     export interface Request {
       tokenData?: {
         email: string,
-        role: string,
+        // role: string,
+        token: string,
       },
       authUser: UserDocument
     }

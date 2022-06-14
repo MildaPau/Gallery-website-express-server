@@ -16,7 +16,8 @@ export const authMiddleware: RequestHandler = (req, res, next) => {
 
     req.tokenData = {
       email: decodedInfo.email,
-      role: decodedInfo.role,
+      // role: decodedInfo.role,
+      token,
     };
 
     next();

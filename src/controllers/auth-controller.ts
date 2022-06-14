@@ -45,3 +45,29 @@ export const login: RequestHandler<
     });
   }
 };
+
+export const authenticate: RequestHandler<
+  unknown,
+  AuthResponseBody
+> = async (req, res) => {
+  try {
+    if (req.tokenData === undefined) {
+      throw new Error('Užšifruotuose duomenyse nėra vartotojo duomenų');
+    }
+    const { email, token } = req.tokenData;
+    const userDoc = await UserModel.findOne({ email });
+
+    if (userDoc === null) {
+      throw new Error(`Vartotojas nerastas su tokiu paštu '${email}'`);
+    }
+    const user = createUserViewModel(userDoc);
+    res.status(200).json({
+      user,
+      token,
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: error instanceof Error ? error.message : 'serverio klaida atpažįstant vartotoją',
+    });
+  }
+};
