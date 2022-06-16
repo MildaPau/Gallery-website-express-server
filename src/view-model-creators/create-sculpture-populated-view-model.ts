@@ -1,9 +1,8 @@
 import { SculpturePopulatedDocument } from '../models/sculpture-model';
-import createCategoryViewModel, { CategoryViewModel } from './create-category-view-model';
 import { SculptureViewModel } from './create-sculpture-view-model';
 
 export type SculpturePopulatedViewModel = Omit<SculptureViewModel, 'categoryIds'> & {
-    categories: CategoryViewModel[],
+    categories: string[],
 };
 
 const createSculpturePopulatedViewModel = (
@@ -14,9 +13,8 @@ const createSculpturePopulatedViewModel = (
     year: sculpturePopulatedDoc.year,
     dimensions: sculpturePopulatedDoc.dimensions,
     image: sculpturePopulatedDoc.image,
-    createdAt: sculpturePopulatedDoc.createdAt,
     updatedAt: sculpturePopulatedDoc.updatedAt,
-    categories: sculpturePopulatedDoc.categories.map(createCategoryViewModel),
+    categories: sculpturePopulatedDoc.categories.map((categoryDoc) => categoryDoc.title),
 });
 
 export default createSculpturePopulatedViewModel;

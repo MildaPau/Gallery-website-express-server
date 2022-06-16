@@ -6,7 +6,6 @@ export type SculptureViewModel = {
     year: number,
     dimensions: string,
     image: string,
-    createdAt: string,
     updatedAt: string,
     categoryIds: string[],
 };
@@ -17,7 +16,6 @@ const createSculptureViewModel = (sculptureDoc: SculptureDocument): SculptureVie
     year: sculptureDoc.year,
     dimensions: sculptureDoc.dimensions,
     image: sculptureDoc.image,
-    createdAt: sculptureDoc.createdAt,
     updatedAt: sculptureDoc.updatedAt,
     categoryIds: sculptureDoc.categories.map((categoryId) => categoryId.toString()),
 

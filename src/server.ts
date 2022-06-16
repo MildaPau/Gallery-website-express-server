@@ -6,6 +6,7 @@ import sculpturesRouter from './routers/sculpture-router';
 import categoriesRouter from './routers/categories-router';
 import authRouther from './routers/auth-router';
 import config from './config';
+import CardsRouter from './routers/card-router';
 
 const server = express();
 
@@ -14,6 +15,7 @@ server.use(cors()); // Leidžia bendrauti su visais
 server.use(morgan(':method :url :status'));
 server.use(express.static('public'));
 server.use(express.json());
+server.use('/api/cards', CardsRouter);
 server.use('/api/sculptures', sculpturesRouter);
 server.use('/api/categories', categoriesRouter);
 server.use('/api/auth', authRouther);
