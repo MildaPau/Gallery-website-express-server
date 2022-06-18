@@ -8,6 +8,7 @@ type Card = {
   year: number,
   location: string,
   image: string,
+  link: string,
   createdAt: string,
   updatedAt: string,
 };
@@ -39,6 +40,7 @@ const cardSchema = new Schema<Card, Model<Card>>({
     type: String,
     required: true,
   },
+  link: String,
   image: {
     type: String,
     required: true,
