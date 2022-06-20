@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { Error } from 'mongoose';
-import { formatSculptureValidationError } from './sculptures-error-formatters';
+// import { formatSculptureValidationError } from './sculptures-error-formatters';
 
 import SculptureModel, { SculpturePopulatedDocument, SculptureDocument, SculptureProps } from '../../models/sculpture-model';
 
@@ -85,20 +85,43 @@ export const getSculpture: RequestHandler<
 export const createSculpture: RequestHandler<
   unknown,
   SingularSculptureResponse,
-  SculptureProps
+  Partial<SculptureProps>
 > = async (req, res) => {
-  const sculptureProps = req.body;
+  const sculptureProps: Partial<SculptureProps> = {
+    ...req.body,
+    image: req.file && `uploads/${req.file.filename}`,
+  };
+  console.log(sculptureProps);
+  // console.log('------------');
+  // console.log('Body');
+  // console.log(req.body);
+  // console.log('------------');
+  // console.log('File');
+  // console.log(req.file);
   try {
     const uniqCategoriesIds = await validateCategoriesIds(sculptureProps.categories);
     sculptureProps.categories = uniqCategoriesIds;
     const sculptureDoc = await SculptureModel.create(sculptureProps);
+    // sculptureDoc.overwrite(sculptureProps);
+    if (sculptureProps.title) sculptureDoc.title = sculptureProps.title;
+    if (sculptureProps.year) sculptureDoc.year = sculptureProps.year;
+    if (sculptureProps.dimensions) sculptureDoc.dimensions = sculptureProps.dimensions;
+    if (sculptureProps.image) sculptureDoc.image = sculptureProps.image;
+    await sculptureDoc.save();
+
+    console.log('SCulptureDoc');
+    console.log(sculptureDoc);
+
     const sculptureViewModel = createSculptureViewModel(sculptureDoc);
+
     res.status(201).json({ sculpture: sculptureViewModel });
-  } catch (err) {
-    const error = err instanceof Error.ValidationError
-      ? formatSculptureValidationError(err)
-      : 'Serverio klaida';
-    res.status(400).json({ error });
+  } catch (error) {
+    // const error = err instanceof Error.ValidationError
+    //   ? formatSculptureValidationError(err)
+    //   : 'Serverio klaida';
+    res.status(404).json({
+      error: error instanceof Error ? error.message : 'Klaidingi duomenys',
+    });
   }
 };
 

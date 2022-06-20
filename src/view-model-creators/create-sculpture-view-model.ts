@@ -1,3 +1,4 @@
+import config from '../config';
 import { SculptureDocument } from '../models/sculpture-model';
 
 export type SculptureViewModel = {
@@ -15,7 +16,7 @@ const createSculptureViewModel = (sculptureDoc: SculptureDocument): SculptureVie
     title: sculptureDoc.title,
     year: sculptureDoc.year,
     dimensions: sculptureDoc.dimensions,
-    image: sculptureDoc.image,
+    image: sculptureDoc.image && `${config.server.domain}/${sculptureDoc.image}`.replaceAll('\\', '/'),
     updatedAt: sculptureDoc.updatedAt,
     categoryIds: sculptureDoc.categories.map((categoryId) => categoryId.toString()),
 

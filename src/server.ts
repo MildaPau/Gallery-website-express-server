@@ -32,6 +32,6 @@ mongoose.connect(
       return;
     }
     console.log('Successfully connected to MongoDB');
-    server.listen(1337, () => console.log('Application server is running on: http://localhost:1337'));
+    server.listen(1337, () => console.log(`Application server is running on: ${config.server.domain}`));
   },
 );

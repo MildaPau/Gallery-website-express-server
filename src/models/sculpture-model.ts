@@ -42,10 +42,7 @@ const sculptureSchema = new Schema<Sculpture, Model<Sculpture>>({
     type: String,
     required: true,
   },
-  image: {
-    type: String,
-    required: true,
-  },
+  image: String,
   // One to many -> Skulptūra gali tureti daug kategorijų.
   categories: {
     type: [{ type: Schema.Types.ObjectId, ref: 'Category' }],

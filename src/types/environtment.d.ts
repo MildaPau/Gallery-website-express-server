@@ -5,6 +5,7 @@ declare global {
     interface ProcessEnv {
       DB_CONNECTION_URL?: string,
       TOKEN_SECRET?: string,
+      SERVER_DOMAIN?: string,
     }
   }
 }
